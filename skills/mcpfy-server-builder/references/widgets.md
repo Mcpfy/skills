@@ -8,6 +8,8 @@ Widgets give a tool an interactive UI instead of (or alongside) plain text/struc
   - [Table of Contents](#table-of-contents)
   - [Directory convention](#directory-convention)
   - [Registering a widget on a tool](#registering-a-widget-on-a-tool)
+  - [The widget options object (advanced)](#the-widget-options-object-advanced)
+  - [Content Security Policy (CSP)](#content-security-policy-csp)
   - [The widget entry file](#the-widget-entry-file)
   - [Widget content shape (when returning content directly, not via a bound tool)](#widget-content-shape-when-returning-content-directly-not-via-a-bound-tool)
   - [Widget size](#widget-size)
@@ -46,6 +48,55 @@ server.tool(
   async ({ city }) => object({ city, temperature: 24, condition: "Sunny" })
 );
 ```
+
+## The widget options object (advanced)
+
+`widget` also accepts an object instead of a bare string, for anything beyond the default folder/entry:
+
+```typescript
+server.tool(
+  {
+    name: "weather",
+    description: "Get the current weather",
+    schema: z.object({ city: z.string() }),
+    widget: {
+      dir: "weather",                 // required — same as the string form
+      entry: "main.tsx",              // default: main.tsx, then main.jsx, index.tsx, index.jsx
+      protocols: ["mcp-apps", "apps-sdk"], // default: all three ("mcp-ui", "mcp-apps", "apps-sdk")
+      size: ["800px", "600px"],
+      csp: { connectDomains: ["https://api.weather.com"] },
+    },
+  },
+  async ({ city }) => object({ city, temperature: 24, condition: "Sunny" })
+);
+```
+
+Use `protocols` to limit which host protocols the widget is registered under — e.g. drop `"apps-sdk"` if the widget should never be exposed to ChatGPT. `UIResourceDefinition` (used with `server.uiResource()`) takes the same `csp`/`size`/`protocols` fields.
+
+## Content Security Policy (CSP)
+
+**Default is permissive.** If a widget sets no `csp` and no `MCP_URL`/`MCPFY_MCP_URL`/`MCPFY_URL` env var is set, mcpfy omits the CSP header entirely and the widget's inline HTML/JS runs unrestricted.
+
+**Setting `csp` makes it strict**, not additive — once any domain is declared, the server emits:
+
+```
+default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline';
+connect-src <connectDomains, or 'none'>; img-src <resourceDomains, or 'none'>; font-src <resourceDomains, or 'none'>
+```
+
+`WidgetCsp` has exactly two fields:
+
+```typescript
+{
+  connectDomains?: string[];   // hosts the widget may fetch/XHR/WebSocket to
+  resourceDomains?: string[];  // hosts for images, fonts, CSS — same list drives img-src and font-src
+}
+```
+
+- **The server's own public origin is auto-merged in** (read from `MCP_URL`, or the legacy `MCPFY_MCP_URL`/`MCPFY_URL`) — you don't need to list it yourself, but you must set that env var to the real HTTPS origin (ngrok/production), not `127.0.0.1`, or the widget can't call back into its own server once CSP is active.
+- **`data:` image URIs are blocked once `resourceDomains` is set** — `img-src` becomes an explicit domain list (or `'none'`), which does not implicitly allow `data:`. Use an external asset URL or inline SVG markup instead of a `data:` URI once a widget declares any `csp`.
+- **ChatGPT (Apps SDK) gets the same policy translated**, not a separate config — `connectDomains`/`resourceDomains` become `openai/widgetCSP.connect_domains`/`.resource_domains` in the tool's `_meta` automatically. Don't hand-write `openai/widgetCSP`; set `csp` once and both protocols pick it up.
+- Only set `csp` when the widget actually calls out to an external host (its own API, a CDN). A purely self-contained widget (no fetch, no external images) should omit `csp` and stay permissive.
 
 ## The widget entry file
 
@@ -148,3 +199,6 @@ Always check `capabilities` from `useHostContext()` before relying on an optiona
 - **Fails only in production** — you forgot `mcpfy build`; the production server needs built widget assets, `mcpfy dev` alone isn't enough.
 - **Invalid widget content error** — you passed a bare HTML string instead of `{ type: "html", html: "..." }`.
 - **Invalid widget size error** — you passed a keyword string instead of a `[width, height]` tuple.
+- **Widget's `fetch`/image works with no `csp` but breaks after adding one** — `csp` is strict, not additive: any host not listed in `connectDomains`/`resourceDomains` is now blocked, including ones that worked by default before.
+- **`data:` image stopped rendering after adding `csp`** — `resourceDomains` drives `img-src` as an explicit allowlist with no implicit `data:` exception; switch to inline SVG or a hosted URL.
+- **Widget can't reach its own server once `csp` is set** — set `MCP_URL` (or `MCPFY_MCP_URL`/`MCPFY_URL`) to the real public HTTPS origin; that's what gets auto-merged into `connectDomains`/`resourceDomains`, and it won't happen with a `127.0.0.1` value.
