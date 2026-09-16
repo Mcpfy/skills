@@ -9,7 +9,7 @@
     "url": "https://github.com/mcpfyy"
   },
   "homepage": "https://github.com/mcpfyy/mcpfy",
-  "repository": "https://github.com/mcpfyy/skills",
+  "repository": "https://github.com/mcpfy/skills",
   "license": "MIT",
   "keywords": ["mcp", "model-context-protocol", "mcpfy", "typescript", "server", "widget"]
 }

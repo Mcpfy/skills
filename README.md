@@ -38,7 +38,7 @@ Scaffold, build, extend, or debug an MCP server using the mcpfy-sdk TypeScript p
 Register this repository as a marketplace:
 
 ```bash
-/plugin marketplace add mcpfyy/skills
+/plugin marketplace add mcpfy/skills
 ```
 
 Then install skills:
@@ -52,7 +52,7 @@ Then install skills:
 ```
 
 Or browse and install via the UI:
-1. Run `/plugin marketplace add mcpfyy/skills`
+1. Run `/plugin marketplace add mcpfy/skills`
 2. Select `Browse and install plugins`
 3. Select `mcpfy`
 4. Choose a skill to install
@@ -61,7 +61,7 @@ Or browse and install via the UI:
 ### Via skills.sh
 
 ```bash
-npx skills add mcpfyy/skills
+npx skills add mcpfy/skills
 ```
 
 ### Claude.ai
@@ -98,7 +98,7 @@ npx skills add mcpfyy/skills
 
 This repository is compatible with:
 - **Claude Code**: Via `.claude-plugin/marketplace.json`
-- **skills.sh**: Via `npx skills add mcpfyy/skills`
+- **skills.sh**: Via `npx skills add mcpfy/skills`
 - **Claude.ai**: Manual upload of skill folders
 - **Cursor/Windsurf**: Local skill references
 
@@ -120,7 +120,7 @@ Skills follow the [Agent Skills specification](https://agentskills.io). When con
 
 ## Support
 
-- **Issues**: [github.com/mcpfyy/skills/issues](https://github.com/mcpfyy/skills/issues)
+- **Issues**: [github.com/mcpfy/skills/issues](https://github.com/mcpfy/skills/issues)
 - **Email**: [team@mcpfy.com](mailto:team@mcpfy.com)
 
 These skills run entirely locally against your own project — they don't call any mcpfy-owned service, collect data, or require an account.
