@@ -1,0 +1,31 @@
+{
+  "name": "mcpfy",
+  "owner": {
+    "name": "mcpfy",
+    "email": "team@mcpfy.com"
+  },
+  "metadata": {
+    "description": "Official skills for the mcpfy-sdk framework - build production-ready MCP servers",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "all-skills",
+      "description": "Complete collection of mcpfy skills",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/mcpfy-server-builder"
+      ]
+    },
+    {
+      "name": "mcpfy-server-builder",
+      "description": "Scaffold, build, extend, or debug an MCP server using the mcpfy-sdk TypeScript package.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/mcpfy-server-builder"
+      ]
+    }
+  ]
+}
