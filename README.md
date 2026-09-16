@@ -24,6 +24,13 @@ Scaffold, build, extend, or debug an MCP server using the mcpfy-sdk TypeScript p
 
 **Use when**: Creating MCP servers, defining tools/resources/prompts/widgets, connecting an mcpfy client, setting up auth, or working with the mcpfy-sdk framework.
 
+**Example prompts:**
+- "Scaffold a new MCP server with mcpfy that has a tool for rolling dice"
+- "Add OAuth authentication to my mcpfy MCP server"
+- "Build a weather widget for my mcpfy server using `mcpfy-sdk/widget`"
+- "My mcpfy widget's `fetch` call is being blocked — help me configure its CSP"
+- "Connect an MCP client to my mcpfy server over HTTP and call one of its tools"
+
 ## Installation
 
 ### Claude Code
@@ -110,6 +117,13 @@ Skills follow the [Agent Skills specification](https://agentskills.io). When con
 
 - **mcpfy-sdk GitHub**: [github.com/mcpfyy/mcpfy](https://github.com/mcpfyy/mcpfy)
 - **MCP Protocol**: [modelcontextprotocol.io](https://modelcontextprotocol.io)
+
+## Support
+
+- **Issues**: [github.com/mcpfyy/skills/issues](https://github.com/mcpfyy/skills/issues)
+- **Email**: [team@mcpfy.com](mailto:team@mcpfy.com)
+
+These skills run entirely locally against your own project — they don't call any mcpfy-owned service, collect data, or require an account.
 
 ## License
 

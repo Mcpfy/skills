@@ -1,0 +1,15 @@
+{
+  "name": "mcpfy-server-builder",
+  "displayName": "mcpfy Server Builder",
+  "version": "1.0.0",
+  "description": "Scaffold, build, extend, or debug an MCP server using the mcpfy-sdk TypeScript package.",
+  "author": {
+    "name": "mcpfy",
+    "email": "team@mcpfy.com",
+    "url": "https://github.com/mcpfyy"
+  },
+  "homepage": "https://github.com/mcpfyy/mcpfy",
+  "repository": "https://github.com/mcpfyy/skills",
+  "license": "MIT",
+  "keywords": ["mcp", "model-context-protocol", "mcpfy", "typescript", "server", "widget"]
+}

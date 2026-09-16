@@ -13,7 +13,7 @@
       "name": "all-skills",
       "description": "Complete collection of mcpfy skills",
       "source": "./",
-      "strict": false,
+      "strict": true,
       "skills": [
         "./skills/mcpfy-server-builder"
       ]
@@ -22,7 +22,7 @@
       "name": "mcpfy-server-builder",
       "description": "Scaffold, build, extend, or debug an MCP server using the mcpfy-sdk TypeScript package.",
       "source": "./",
-      "strict": false,
+      "strict": true,
       "skills": [
         "./skills/mcpfy-server-builder"
       ]
