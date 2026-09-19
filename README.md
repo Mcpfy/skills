@@ -31,6 +31,34 @@ Scaffold, build, extend, or debug an MCP server using the mcpfy-sdk TypeScript p
 - "My mcpfy widget's `fetch` call is being blocked — help me configure its CSP"
 - "Connect an MCP client to my mcpfy server over HTTP and call one of its tools"
 
+### mcpfy-webmcp-builder
+
+Let AI agents that live in the browser operate your website. [WebMCP](https://webmachinelearning.github.io/webmcp/) is a browser API (`document.modelContext`) through which a page publishes tools that an in-browser agent can call, using the visitor's own signed-in session and without scraping the page. This skill guides Claude through adding it to a real codebase.
+
+How it works:
+1. **Survey** — Claude reads your front end, finds the forms and multi-screen journeys, and checks whether you already run an MCP server (for example one built with `mcpfy-sdk`).
+2. **Propose** — it writes up a table of the agent-facing actions it suggests, how each would be delivered, and which ones are risky, then waits for your approval. No code is written before that.
+3. **Build** — each approved action ships through one of three routes:
+   - *Form annotations*: attributes on your existing `<form>`s
+   - *Custom tools*: `registerTool` for a journey that deserves a single purpose-built call
+   - *Bridge*: your existing MCP server's tools republished inside the page
+4. **Test** — the tools are listed and executed in a real browser through Chrome DevTools MCP, and each result is checked against what you approved.
+5. **Review** — a safety pass covers honest annotations, confirmation for irreversible actions, server-side authorization and untrusted output.
+
+Also included: runtime guards for browsers without WebMCP, polyfill guidance, and recipes for vanilla JS, React, Next.js, Vue and Angular.
+
+**Use when**: Making a site usable by browser agents, turning forms into agent tools, registering page tools with `registerTool`, or exposing an existing MCP server on your website.
+
+**Not for**: Building remote MCP servers or chat-client widgets. Use `mcpfy-server-builder` for those.
+
+**Good to know**: WebMCP support is still experimental (origin trials and flags in Chromium-based browsers). The skill has Claude check current support before making promises, and every approach leaves your normal UI working in browsers without it.
+
+**Example prompts:**
+- "Let browser agents book appointments on our site — what should we expose through WebMCP?"
+- "Turn the contact and quote forms in this repo into agent-callable tools"
+- "Our mcpfy MCP server is live; make its tools available to agents visiting our website"
+- "Replace our four-step signup with a single WebMCP tool and show me how to test it"
+
 ## Installation
 
 ### Claude Code
@@ -49,6 +77,7 @@ Then install skills:
 
 # Or install individual skills
 /plugin install mcpfy-server-builder@mcpfy
+/plugin install mcpfy-webmcp-builder@mcpfy
 ```
 
 Or browse and install via the UI:
@@ -83,11 +112,15 @@ npx skills add mcpfy/skills
 .
 ├── .claude-plugin/       # Claude Code marketplace configuration
 ├── skills/               # Individual skills
-│   └── mcpfy-server-builder/
+│   ├── mcpfy-server-builder/
+│   │   ├── SKILL.md      # Skill definition
+│   │   ├── LICENSE.txt   # Skill license
+│   │   ├── assets/       # Bundled template files
+│   │   └── references/   # Reference docs loaded on demand
+│   └── mcpfy-webmcp-builder/
 │       ├── SKILL.md      # Skill definition
 │       ├── LICENSE.txt   # Skill license
-│       ├── assets/       # Bundled template files
-│       └── references/   # Reference docs loaded on demand
+│       └── references/   # Approach guide, forms, custom tools, runtime, bridge, testing, safety
 ├── spec/                 # Agent Skills specification reference
 │   └── README.md
 ├── LICENSE               # Repository license (MIT)
