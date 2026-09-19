@@ -31,6 +31,24 @@ Scaffold, build, extend, or debug an MCP server using the mcpfy-sdk TypeScript p
 - "My mcpfy widget's `fetch` call is being blocked — help me configure its CSP"
 - "Connect an MCP client to my mcpfy server over HTTP and call one of its tools"
 
+### mcpfy-webmcp-builder
+
+Make a website callable by in-browser AI agents with WebMCP. The skill surveys your project, proposes which site actions to expose and waits for your approval, then builds them as annotated forms, custom `registerTool` tools, or a bridge from an existing MCP server (for example one built with `mcpfy-sdk`). This skill provides:
+- A proposal step that requires your sign-off before any code is written
+- Form annotations that turn existing `<form>`s into agent tools
+- Custom tools via `document.modelContext.registerTool`
+- A bridge that republishes an existing MCP server inside the page
+- Runtime guards, polyfill guidance, and recipes for React, Next.js, Vue and Angular
+- Browser-based testing with Chrome DevTools MCP and a safety review checklist
+
+**Use when**: Making a site WebMCP-compatible, annotating forms as agent tools, registering page tools with `registerTool`, or putting an existing MCP server on a website with `webmcp-proxy`.
+
+**Example prompts:**
+- "Let browser agents book appointments on our site — what should we expose through WebMCP?"
+- "Turn the contact and quote forms in this repo into agent-callable tools"
+- "Our mcpfy MCP server is live; make its tools available to agents visiting our website"
+- "Replace our four-step signup with a single WebMCP tool and show me how to test it"
+
 ## Installation
 
 ### Claude Code
@@ -49,6 +67,7 @@ Then install skills:
 
 # Or install individual skills
 /plugin install mcpfy-server-builder@mcpfy
+/plugin install mcpfy-webmcp-builder@mcpfy
 ```
 
 Or browse and install via the UI:
@@ -83,11 +102,15 @@ npx skills add mcpfy/skills
 .
 ├── .claude-plugin/       # Claude Code marketplace configuration
 ├── skills/               # Individual skills
-│   └── mcpfy-server-builder/
+│   ├── mcpfy-server-builder/
+│   │   ├── SKILL.md      # Skill definition
+│   │   ├── LICENSE.txt   # Skill license
+│   │   ├── assets/       # Bundled template files
+│   │   └── references/   # Reference docs loaded on demand
+│   └── mcpfy-webmcp-builder/
 │       ├── SKILL.md      # Skill definition
 │       ├── LICENSE.txt   # Skill license
-│       ├── assets/       # Bundled template files
-│       └── references/   # Reference docs loaded on demand
+│       └── references/   # Approach guide, forms, custom tools, runtime, bridge, testing, safety
 ├── spec/                 # Agent Skills specification reference
 │   └── README.md
 ├── LICENSE               # Repository license (MIT)

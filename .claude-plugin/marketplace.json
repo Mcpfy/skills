@@ -15,7 +15,8 @@
       "source": "./",
       "strict": true,
       "skills": [
-        "./skills/mcpfy-server-builder"
+        "./skills/mcpfy-server-builder",
+        "./skills/mcpfy-webmcp-builder"
       ]
     },
     {
@@ -25,6 +26,15 @@
       "strict": true,
       "skills": [
         "./skills/mcpfy-server-builder"
+      ]
+    },
+    {
+      "name": "mcpfy-webmcp-builder",
+      "description": "Make websites callable by in-browser AI agents with WebMCP: annotated forms, registerTool tools, or a bridge from an existing MCP server.",
+      "source": "./",
+      "strict": true,
+      "skills": [
+        "./skills/mcpfy-webmcp-builder"
       ]
     }
   ]
