@@ -1,6 +1,25 @@
 # mcpfy Skills
 
+[![License: MIT](https://img.shields.io/github/license/mcpfy/skills)](LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/mcpfy/skills?style=social)](https://github.com/mcpfy/skills/stargazers)
+[![Last commit](https://img.shields.io/github/last-commit/mcpfy/skills)](https://github.com/mcpfy/skills/commits/main)
+[![Skills](https://img.shields.io/badge/skills-2-blue)](#available-skills)
+
 Official skills collection for the [mcpfy-sdk](https://github.com/mcpfyy/mcpfy) framework. Skills are reusable capabilities that enhance Claude's ability to build and work with Model Context Protocol (MCP) servers.
+
+## Table of Contents
+
+- [What are Skills?](#what-are-skills)
+- [Available Skills](#available-skills)
+  - [mcpfy-server-builder](#mcpfy-server-builder)
+  - [mcpfy-webmcp-builder](#mcpfy-webmcp-builder)
+- [Installation](#installation)
+- [Repository Structure](#repository-structure)
+- [Skills Platform Integration](#skills-platform-integration)
+- [Contributing](#contributing)
+- [Learn More](#learn-more)
+- [Support](#support)
+- [License](#license)
 
 ## What are Skills?
 
@@ -15,25 +34,26 @@ For more information about Agent Skills, visit:
 
 ### mcpfy-server-builder
 
-Scaffold, build, extend, or debug an MCP server using the mcpfy-sdk TypeScript package. This skill provides:
+Scaffold, build, extend, or debug a **standalone MCP server** using the mcpfy-sdk TypeScript package. This skill covers backend server work — not browser-side WebMCP on a website. It provides:
 - Quick start with `npx create-mcpfy-app`
-- Defining tools, resources, prompts, and widgets
-- Client setup and authentication (OAuth/JWT)
-- Building MCP App widgets with `mcpfy-sdk/widget`
-- Troubleshooting common issues
+- Defining tools, resources, prompts, and MCP App widgets (UI embedded in chat clients via `mcpfy-sdk/widget`)
+- MCP client setup and server-side authentication (OAuth/JWT)
+- stdio and HTTP transport, plus troubleshooting common mcpfy-sdk mistakes
 
-**Use when**: Creating MCP servers, defining tools/resources/prompts/widgets, connecting an mcpfy client, setting up auth, or working with the mcpfy-sdk framework.
+**Use when**: You need a remote MCP server — scaffolding with `create-mcpfy-app`, adding tools/resources/prompts/MCP App widgets, connecting an MCP client over stdio or HTTP, or configuring OAuth/JWT on the server.
+
+**Not for**: Letting in-browser agents operate your website. Use `mcpfy-webmcp-builder` for WebMCP (`document.modelContext`) on a front end.
 
 **Example prompts:**
 - "Scaffold a new MCP server with mcpfy that has a tool for rolling dice"
 - "Add OAuth authentication to my mcpfy MCP server"
-- "Build a weather widget for my mcpfy server using `mcpfy-sdk/widget`"
+- "Build an MCP App weather widget for my mcpfy server using `mcpfy-sdk/widget`"
 - "My mcpfy widget's `fetch` call is being blocked — help me configure its CSP"
 - "Connect an MCP client to my mcpfy server over HTTP and call one of its tools"
 
 ### mcpfy-webmcp-builder
 
-Let AI agents that live in the browser operate your website. [WebMCP](https://webmachinelearning.github.io/webmcp/) is a browser API (`document.modelContext`) through which a page publishes tools that an in-browser agent can call, using the visitor's own signed-in session and without scraping the page. This skill guides Claude through adding it to a real codebase.
+Let **in-browser AI agents** operate your website. [WebMCP](https://webmachinelearning.github.io/webmcp/) is a browser API (`document.modelContext`) through which a page publishes tools that an agent in the user's browser can call — using the visitor's signed-in session, without scraping the DOM. This skill guides Claude through adding WebMCP to an existing front-end codebase.
 
 How it works:
 1. **Survey** — Claude reads your front end, finds the forms and multi-screen journeys, and checks whether you already run an MCP server (for example one built with `mcpfy-sdk`).
@@ -47,16 +67,16 @@ How it works:
 
 Also included: runtime guards for browsers without WebMCP, polyfill guidance, and recipes for vanilla JS, React, Next.js, Vue and Angular.
 
-**Use when**: Making a site usable by browser agents, turning forms into agent tools, registering page tools with `registerTool`, or exposing an existing MCP server on your website.
+**Use when**: Adding WebMCP to a website — annotated forms, `registerTool` page tools, or bridging an existing MCP server's tools into the browser tab so agents can act on the site.
 
-**Not for**: Building remote MCP servers or chat-client widgets. Use `mcpfy-server-builder` for those.
+**Not for**: Building or deploying a remote MCP server, MCP App chat widgets, or server-side OAuth setup. Use `mcpfy-server-builder` for those.
 
 **Good to know**: WebMCP support is still experimental (origin trials and flags in Chromium-based browsers). The skill has Claude check current support before making promises, and every approach leaves your normal UI working in browsers without it.
 
 **Example prompts:**
 - "Let browser agents book appointments on our site — what should we expose through WebMCP?"
 - "Turn the contact and quote forms in this repo into agent-callable tools"
-- "Our mcpfy MCP server is live; make its tools available to agents visiting our website"
+- "Our mcpfy MCP server is live; bridge its tools so agents visiting our website can call them"
 - "Replace our four-step signup with a single WebMCP tool and show me how to test it"
 
 ## Installation
@@ -137,23 +157,33 @@ This repository is compatible with:
 
 ## Contributing
 
-Skills follow the [Agent Skills specification](https://agentskills.io). When contributing:
+Skills follow the [Agent Skills specification](https://agentskills.io). For the `SKILL.md` format and frontmatter rules used in this repository, see [spec/README.md](spec/README.md).
 
-1. Fork this repository
-2. Create a new skill folder under `skills/`
-3. Include a `SKILL.md` file with proper frontmatter
-4. Add a `LICENSE.txt` if using a different license
-5. Test thoroughly with Claude
-6. Submit a pull request
+To add or improve a skill:
+
+1. Fork the repository and create a branch.
+2. Add a folder under `skills/<skill-name>/` with at minimum a `SKILL.md`.
+3. Use [skills/mcpfy-server-builder/SKILL.md](skills/mcpfy-server-builder/SKILL.md) as the reference layout — it shows the expected YAML frontmatter (`name`, `description`), staged workflow, on-demand `references/` docs, bundled `assets/`, and guardrails.
+4. Add a `LICENSE.txt` in the skill folder only if the skill uses a different license than the repo (MIT).
+5. Register new skills in [.claude-plugin/marketplace.json](.claude-plugin/marketplace.json) so they appear in the Claude Code marketplace.
+6. Test the skill end-to-end with your target agent before opening a pull request.
+7. Open a PR describing what the skill does and which example prompts you used to validate it.
+
+Doc fixes and reference improvements to existing skills do not require marketplace changes.
 
 ## Learn More
 
-- **mcpfy-sdk GitHub**: [github.com/mcpfyy/mcpfy](https://github.com/mcpfyy/mcpfy)
+- **Agent Skills spec (this repo)**: [spec/README.md](spec/README.md) — `SKILL.md` frontmatter, required fields, and layout conventions used here
+- **Agent Skills (official)**: [agentskills.io](https://agentskills.io)
+- **Skills platform**: [skills.sh](https://skills.sh) — install with `npx skills add mcpfy/skills`
+- **mcpfy-sdk**: [github.com/mcpfyy/mcpfy](https://github.com/mcpfyy/mcpfy)
 - **MCP Protocol**: [modelcontextprotocol.io](https://modelcontextprotocol.io)
+- **WebMCP (browser API)**: [webmachinelearning.github.io/webmcp](https://webmachinelearning.github.io/webmcp/)
 
 ## Support
 
-- **Issues**: [github.com/mcpfy/skills/issues](https://github.com/mcpfy/skills/issues)
+- **Skills issues**: [github.com/mcpfy/skills/issues](https://github.com/mcpfy/skills/issues) — bugs or gaps in these skills
+- **mcpfy-sdk issues**: [github.com/mcpfyy/mcpfy/issues](https://github.com/mcpfyy/mcpfy/issues) — SDK bugs or feature requests
 - **Email**: [team@mcpfy.com](mailto:team@mcpfy.com)
 
 These skills run entirely locally against your own project — they don't call any mcpfy-owned service, collect data, or require an account.
